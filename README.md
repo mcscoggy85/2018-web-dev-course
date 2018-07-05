@@ -12,7 +12,7 @@ webapp2 is a mixture of html and css to produce an image gallery
 webapp3 is a dancing robot challenge using css
 
 ## Webapp 4 ##
-webapp4 is about building a website using bootstrap
+webapp4 is about building a website using bootstrap to create a landing page
 
 
 Resource URL's
