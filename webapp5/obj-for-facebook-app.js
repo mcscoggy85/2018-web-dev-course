@@ -41,30 +41,23 @@ let newsfeed = [
 let userNamePrompt = prompt("What is your username?");
 let passwordPrompt = prompt("What is your password?");
 
-function signIn(list, username, password) {
-    if (isUser()){
+function signIn(username, password) {
+    if (isUser(username, password)){
         console.log(newsfeed);
     } else {
         alert("Something went wrong, either your username or password is incorrect");
     }
-    // if ((user === database[0].username) && (pass === database[0].password)){
-    //     console.log(newsFeed);
-    // } else {
-    //     alert("Something went wrong, either your username or password is incorrect");
-    // }
 }
 
-
-signIn(database, userNamePrompt, passwordPrompt);
-
-
-function isUser(list, username, password) {
-    for (let user in list){
-        console.log(list[user].username);
-        if ((username === list[user].username) && (password === list[user].password)){
+function isUser(username, password) {
+    for (let user in database){
+        if ((username === database[user].username)
+            && (password === database[user].password)){
+            console.log(`${username} exists`);
             return true;
         }
     }
     return false;
-
 }
+
+signIn(userNamePrompt, passwordPrompt);
