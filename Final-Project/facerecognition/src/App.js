@@ -11,6 +11,7 @@ import tachyons from 'tachyons';
 import Particles from 'react-particles-js';
 import Clarifai from 'clarifai'
 
+
 const app = new Clarifai.App({
  apiKey: 'af738a2550a04dbaac57dabdc60d2749'
 });
@@ -36,7 +37,26 @@ class App extends Component {
       box: {},
       route: 'signin',
       isSignedIn: false,
+      user: {
+        id: '',
+        name: '',
+        email: '',
+        entries: 0,
+        joined: ''
+      }
     }
+  }
+
+  loadUser = (data) => {
+    this.setState({
+      user: {
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        entries: data.entries,
+        joined: data.joined
+      }
+    })
   }
 
   calculateFaceLocation = (data) => {
@@ -88,7 +108,7 @@ class App extends Component {
               (
                 route === 'signin'
                 ? <SignIn onRouteChange={this.onRouteChange}/>
-                  : <Register onRouteChange={this.onRouteChange}/>
+                : <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
               )
 
           }
