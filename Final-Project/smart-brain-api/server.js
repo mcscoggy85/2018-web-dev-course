@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
+const cors = require('cors');
+
 
 const database = {
     users: [
@@ -59,6 +61,8 @@ const addEntries = (request, response) => {
 }
 
 app.use(bodyParser.json());
+app.use(cors());
+
 
 app.listen(3000, () => {
     console.log('app is running on port 3000');
