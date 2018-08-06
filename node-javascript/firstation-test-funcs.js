@@ -1,4 +1,6 @@
 const fs = require('fs-extra');
+const csv = require('csvtojson');
+// const converter = csv(parserParams, streamOption);
 
 const status = [{
   sysd: {
@@ -22,47 +24,35 @@ const status = [{
   }
 }];
 
-// const readFiles = async(file) => {
-//     const response = await fs.readFile(file);
-//     const data = await response.toString();
-//     status[0].stats.vpnStatus = data;
-//     status[0].stats.on = data.includes('Manjaro');
-//   }
-
-const setVPN = async (file) => {
+// using /etc/issue as an example to set object vpn status to true or false
+const setVpnSystemdStatus = async (file) => {
   const response = await fs.readFile(file);
   const data = await response.toString();
   status[0].sysd.vpnStatus.build = data;
   status[0].sysd.vpnStatus.on = data.includes('Linux Mint');
+  const vpnSystemdStatus = status[0].sysd.vpnStatus.on;
+  await console.log(vpnSystemdStatus);
 };
-
-const vpnLogs = async(file) => {
-  const response = await fs.readFile(file);
-  const data = await response.toString();
-  status[0].logs.openvpn.stats = data
-//   console.log(status[0].logs.openvpn.stats);
-
-}
 
 // (async () => {
 //     setVPN();
 // })();
 
-const readObj = async() => {
-    let ctr = 0;
-    await console.log('Overall Obj:', status[0]);
-    const statusVpn = status[0].logs.openvpn.stats.split('\n');
-    statusVpn.forEach(element => {
-        console.log(ctr +' ===== '+ element);
-        ctr++
+const readVpnStatusLogs = async(file) => {
+    const vpnStatusLog = await csv().fromFile(file);
+    await console.log('Reading csv as object:');
+    const newStatusLog = await vpnStatusLog.map(row => Object.values(row).join(' '));
+    status[0].logs.openvpn.stats = newStatusLog;
+    // await console.log(status[0].logs.openvpn.stats);
+    await status[0].logs.openvpn.stats.forEach(element => {
+        console.log(element);
     });
 
 }
 
 const constructObj = async() => {
-    await setVPN('/etc/issue');
-    await vpnLogs('./openvpn-status.log');
-    await readObj();
+    await setVpnSystemdStatus('/etc/issue');
+    await readVpnStatusLogs('./openvpn-status.log');
 }
 
 constructObj();
